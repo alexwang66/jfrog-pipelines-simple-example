@@ -2,7 +2,7 @@ template: true   # required for local templates
 valuesFilePath: ./values.yml
 
 resources:
-  - name: myGitRepo
+  - name: github_alex
     type: GitRepo
     configuration:
       # SCM integration where the repository is located
@@ -27,27 +27,27 @@ resources:
 pipelines:
   - name: pipeline_of_pipelines_1
     steps:
-  #     - name: p1_s1
-  #       type: Bash
-  #       configuration:
-  #         inputResources:
-  #           # Sets up step to be triggered when there are commit events to myFirstRepo
-  #           - name: myGitRepo
-  #           - name: cron_trigger
-  #       execution:
-  #         onExecute:
-  #           # Data from input resources is available as env variables in the step
-  #           - echo $res_myFirstRepo_commitSha
-  #           # The next two commands add variables to run state, which is available to all downstream steps in this run
-  #           # Run state documentation: https://www.jfrog.com/confluence/display/JFROG/Creating+Stateful+Pipelines#CreatingStatefulPipelines-RunState
-  #           - add_run_variables current_runid=$run_id
-  #           - add_run_variables commitSha=$res_myFirstRepo_commitSha
-  #           # This variable is written to pipeline state in p1_s3.
-  #           # So this will be empty during first run and will be set to prior run number in subsequent runs
-  #           # Pipeline state documentation: https://www.jfrog.com/confluence/display/JFROG/Creating+Stateful+Pipelines#CreatingStatefulPipelines-PipelineState
-  #           - echo "Previous run ID is $prev_runid"
-  #         onStart:
-  #           - update_run_description "Pipeline of pipelines. First pipeline triggers second pipeline."
+      - name: p1_s1
+        type: Bash
+        configuration:
+          inputResources:
+            # Sets up step to be triggered when there are commit events to myFirstRepo
+            - name: github_alex
+            - name: cron_trigger
+        execution:
+          onExecute:
+            # Data from input resources is available as env variables in the step
+            - echo $res_myFirstRepo_commitSha
+            # The next two commands add variables to run state, which is available to all downstream steps in this run
+            # Run state documentation: https://www.jfrog.com/confluence/display/JFROG/Creating+Stateful+Pipelines#CreatingStatefulPipelines-RunState
+            - add_run_variables current_runid=$run_id
+            - add_run_variables commitSha=$res_myFirstRepo_commitSha
+            # This variable is written to pipeline state in p1_s3.
+            # So this will be empty during first run and will be set to prior run number in subsequent runs
+            # Pipeline state documentation: https://www.jfrog.com/confluence/display/JFROG/Creating+Stateful+Pipelines#CreatingStatefulPipelines-PipelineState
+            - echo "Previous run ID is $prev_runid"
+          onStart:
+            - update_run_description "Pipeline of pipelines. First pipeline triggers second pipeline."
 
       - name: p1_s2
         type: Bash
