@@ -32,7 +32,7 @@ pipelines:
         configuration:
           inputResources:
             # Sets up step to be triggered when there are commit events to myFirstRepo
-            - name: alexwang_simple
+            - name: myGitRepo
             - name: cron_trigger
         execution:
           onExecute:
